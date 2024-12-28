@@ -72,8 +72,14 @@ const uint32_t ROWS_PER_PAGE = PAGE_SIZE / ROW_SIZE;
 const uint32_t TABLE_MAX_ROWS = ROWS_PER_PAGE * TABLE_MAX_PAGES;
 
 typedef struct {
+    int file_descriptor;
+    uint32_t file_length;
+    void* pages[TABLE_MAX_PAGES];
+} Pager;
+
+typedef struct {
     uint32_t num_rows;
-    void *pages[TABLE_MAX_PAGES];
+    Pager* Pager;
 } Table;
 
 void* row_slot(Table* table, uint32_t row_num) {
