@@ -88,6 +88,21 @@ typedef struct {
     bool end_of_table;
 } Cursor;
 
+typedef enum {
+    NODE_INTERNAL,
+    NODE_LEAF
+} NodeType;
+
+// Common Node Header Layout
+
+const uint32_t NODE_TYPE_SIZE = sizeof(uint8_t);
+const uint32_t NODE_TYPE_OFFSET = 0;
+const uint32_t IS_ROOT_SIZE = sizeof(uint8_t);
+const uint32_t IS_ROOT_OFFSET = NODE_TYPE_SIZE;
+const uint32_t PARENT_POINTER_SIZE = sizeof(uint32_t);
+const uint32_t PARENT_POINTER_OFFSET = IS_ROOT_SIZE + IS_ROOT_OFFSET;
+const uint8_t COMMON_NODE_HEADER_SIZE = NODE_TYPE_SIZE + IS_ROOT_SIZE + PARENT_POINTER_SIZE;
+
 Cursor* table_start(Table* table) {
     Cursor *cursor = malloc(sizeof(Cursor));
     cursor->table = table;
