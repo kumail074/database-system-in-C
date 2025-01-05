@@ -95,7 +95,36 @@ typedef enum {
     NODE_LEAF
 } NodeType;
 
+
+// function declaration
+
+uint32_t* leaf_node_num_cells(void* node);
+void* leaf_node_cell(void* node, uint32_t cell_num);
+uint32_t* leaf_node_key(void* node, uint32_t cell_num);
+void* leaf_node_value(void* node, uint32_t cell_num);
+void initialize_leaf_node(void* node);
+void leaf_node_insert(Cursor* cursor, uint32_t key, Row* value);
+Cursor* table_start(Table* table);
+Cursor* table_end(Table* table);
+Pager* pager_open(const char* filename);
 void* get_page(Pager* pager, uint32_t page_num);
+void pager_flush(Pager* pager, uint32_t page_num);
+void cursor_advance(Cursor *cursor);
+void* cursor_value(Cursor *cursor);
+void print_row(Row* row);
+void serialize_row(Row* source, void* destination);
+void deserialize_row(void* source, Row* destination);
+Table* db_open(const char* filename);
+InputBuffer* new_input_buffer();
+void db_close(Table* table);
+MetaCommandResult do_meta_command(InputBuffer *input_buffer, Table *table);
+PrepareResult prepare_insert(InputBuffer* input_buffer, Statement* statement);
+PrepareResult prepare_statement(InputBuffer* input_buffer, Statement* statement);
+ExecuteResult execute_insert(Statement* statement, Table* table);
+ExecuteResult execute_select(Statement* statement, Table* table);
+void print_promt();
+void read_input(InputBuffer* input_buffer);
+
 
 // Common Node Header Layout
 
@@ -117,7 +146,7 @@ const uint32_t LEAF_NODE_HEADER_SIZE = COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_C
 
 const uint32_t LEAF_NODE_KEY_SIZE = sizeof(uint32_t);
 const uint32_t LEAF_NODE_KEY_OFFSET = 0;
-const uint32_t LEAF_NODE_VALUE_SIZE = ROWS_SIZE;
+const uint32_t LEAF_NODE_VALUE_SIZE = ROW_SIZE;
 const uint32_t LEAF_NODE_VALUE_OFFSET = LEAF_NODE_KEY_OFFSET + LEAF_NODE_KEY_SIZE;
 const uint32_t LEAF_NODE_CELL_SIZE = LEAF_NODE_KEY_SIZE + LEAF_NODE_VALUE_SIZE;
 const uint32_t LEAF_NODE_SPACE_FOR_CELLS = PAGE_SIZE - LEAF_NODE_HEADER_SIZE;
