@@ -197,7 +197,7 @@ Cursor* table_start(Table* table) {
     Cursor *cursor = malloc(sizeof(Cursor));
     cursor->table = table;
     cursor->page_num = table->root_page_num;
-    cusror->cell_num = 0;
+    cursor->cell_num = 0;
 
     void* root_node = get_page(table->pager, table->root_page_num);
     uint32_t num_cells = *leaf_node_num_cells(root_node);
@@ -208,7 +208,7 @@ Cursor* table_start(Table* table) {
 }
 
 Cursor* table_end(Table* table) {
-    Cursor* cursor = malloc(sizeof(cursor));
+    Cursor* cursor = malloc(sizeof(Cursor));
     cursor->table = table;
     cursor->page_num = table->root_page_num;
 
