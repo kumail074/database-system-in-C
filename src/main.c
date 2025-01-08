@@ -112,6 +112,7 @@ void pager_flush(Pager* pager, uint32_t page_num);
 void cursor_advance(Cursor *cursor);
 void* cursor_value(Cursor *cursor);
 void print_row(Row* row);
+void print_constants();
 void serialize_row(Row* source, void* destination);
 void deserialize_row(void* source, Row* destination);
 Table* db_open(const char* filename);
@@ -319,6 +320,16 @@ void print_row(Row* row) {
     printf("(%d, %s, %s)\n", row->id, row->username, row->email);
 }
 
+void print_constants() {
+    printf("ROW_SIZE: %d\n", ROW_SIZE);
+    printf("COMMON_NODE_HEADER_SIZE: %d\n", COMMON_NODE_HEADER_SIZE);
+    printf("LEAF_NODE_HEADER_SIZE: %d\n", LEAF_NODE_HEADER_SIZE);
+    printf("LEAF_NODE_CELL_SIZE: %d\n", LEAF_NODE_CELL_SIZE);
+    printf("LEAF_NODE_SPACE_FOR_CELLS: %d\n", LEAF_NODE_SPACE_FOR_CELLS);
+    printf("LEAF_NODE_MAX_CELLS: %d\n", LEAF_NODE_MAX_CELLS);
+}
+
+
 void serialize_row(Row* source, void* destination) {
     memcpy(destination + ID_OFFSET, &(source->id), ID_SIZE);
     memcpy(destination + USERNAME_OFFSET, &(source->username), USERNAME_SIZE);
@@ -392,6 +403,10 @@ MetaCommandResult do_meta_command(InputBuffer *input_buffer, Table *table) {
         //free_table(table);
         db_close(table);
         exit(EXIT_SUCCESS);
+    } else if(strcmp(input_buffer->buffer, "-constants") == 0) {
+        printf("Constants:\n");
+        print_constants();
+        return META_COMMAND_SUCCESS;
     } else {
         return META_COMMAND_UNRECOGNIZED_COMMAND;
     }
